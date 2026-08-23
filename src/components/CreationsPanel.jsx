@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react'
-
-// Swap this for your admin-panel data source once uploads are wired up.
-const CATEGORIES = [
-  { key: 'logos', label: 'Logo animations', count: 12 },
-  { key: 'graphics', label: 'Graphics', count: 29 },
-  { key: 'bots', label: 'Discord bots', count: 21 },
-  { key: 'embeds', label: 'Embeds', count: 8 },
-  { key: 'servers', label: 'Discord servers', count: 6 },
-]
+import { getWork, getCounts, subscribeToWork, CATEGORIES } from '../utils/workStore'
 
 function CreationsPanel({ open, onClose }) {
   const [activeCategory, setActiveCategory] = useState(null)
+  const [counts, setCounts] = useState({})
+  const [work, setWork] = useState([])
+
+  useEffect(() => {
+    function refresh() {
+      setCounts(getCounts())
+      setWork(getWork())
+    }
+    refresh()
+    return subscribeToWork(refresh)
+  }, [])
 
   useEffect(() => {
     if (!open) setActiveCategory(null)
@@ -28,6 +31,8 @@ function CreationsPanel({ open, onClose }) {
   }, [open, onClose])
 
   if (!open) return null
+
+  const activeItems = activeCategory ? work.filter((item) => item.category === activeCategory) : []
 
   return (
     <div
@@ -75,7 +80,7 @@ function CreationsPanel({ open, onClose }) {
                   <p className="font-semibold text-gray-900 group-hover:text-accent transition-colors duration-300 mb-1">
                     {cat.label}
                   </p>
-                  <p className="text-sm text-gray-400">{cat.count} items</p>
+                  <p className="text-sm text-gray-400">{counts[cat.key] || 0} items</p>
                 </button>
               ))}
             </div>
@@ -90,10 +95,21 @@ function CreationsPanel({ open, onClose }) {
                 </svg>
                 All categories
               </button>
-              <p className="text-gray-500">
-                {CATEGORIES.find((c) => c.key === activeCategory)?.label} items would render here —
-                pull them from wherever your admin panel writes uploads to.
-              </p>
+
+              {activeItems.length === 0 ? (
+                <p className="text-gray-400 text-sm">Nothing here yet.</p>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {activeItems.map((item) => (
+                    <div key={item.id} className="rounded-2xl border border-gray-200 overflow-hidden">
+                      {item.fileType?.startsWith('image/') && (
+                        <img src={item.fileData} alt={item.title} className="w-full h-32 object-cover" />
+                      )}
+                      <p className="text-sm font-semibold text-gray-900 px-3 py-2">{item.title}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

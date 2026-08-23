@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react'
 import Cursor from './Cursor'
-
-const CATEGORIES = [
-  { key: 'logos', label: 'Logo animations' },
-  { key: 'graphics', label: 'Graphics' },
-  { key: 'bots', label: 'Discord bots' },
-  { key: 'embeds', label: 'Embeds' },
-  { key: 'servers', label: 'Discord servers' },
-]
+import { addWork, CATEGORIES } from '../utils/workStore'
 
 function AdminAddWork() {
   const [unlocked, setUnlocked] = useState(false)
@@ -49,16 +42,10 @@ function AdminAddWork() {
 
     setSubmitting(true)
     try {
-      // wire this to wherever uploads actually go — API route, storage bucket, etc.
-      // const formData = new FormData()
-      // formData.append('title', title)
-      // formData.append('category', category)
-      // formData.append('file', file)
-      // await fetch('/api/work', { method: 'POST', body: formData })
-
+      await addWork({ title: title.trim(), category, file })
       window.location.href = '/admin'
     } catch (err) {
-      setError('Upload failed. Try again.')
+      setError('Upload failed. Try a smaller file — browser storage has limited space.')
       setSubmitting(false)
     }
   }
