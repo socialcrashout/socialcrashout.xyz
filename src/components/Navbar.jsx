@@ -136,13 +136,13 @@ function Navbar() {
         {isAdmin && (
           <a
             href="/admin"
-            className="hidden lg:inline-flex px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 text-gray-600 hover:border-accent hover:text-accent hover:scale-105 active:scale-90 transition-all duration-200 whitespace-nowrap mr-2"
+            className="hidden xl:inline-flex px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 text-gray-600 hover:border-accent hover:text-accent hover:scale-105 active:scale-90 transition-all duration-200 whitespace-nowrap mr-2"
           >
             Admin
           </a>
         )}
 
-        <span className="hidden lg:flex items-center gap-1.5 text-xs text-gray-500 mr-2 whitespace-nowrap">
+        <span className="hidden xl:flex items-center gap-1.5 text-xs text-gray-500 mr-2 whitespace-nowrap">
           <span className={`w-2 h-2 rounded-full ${status.dot}`} />
           {status.label}
         </span>
