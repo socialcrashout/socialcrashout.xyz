@@ -3,7 +3,7 @@ function FeaturedWork() {
     <a
       id="creations"
       href="/portfolio"
-      className="group relative w-full lg:flex-1 block overflow-hidden bg-white border border-gray-200 rounded-3xl px-8 sm:px-12 py-10 sm:py-12 shadow-sm animate-card-in hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out"
+      className="group relative w-full lg:flex-1 block overflow-hidden bg-white border border-gray-200 rounded-3xl px-6 sm:px-12 py-10 sm:py-12 shadow-sm animate-card-in hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out"
     >
       {/* ambient glow that grows on hover */}
       <div className="pointer-events-none absolute -top-24 -left-24 w-72 h-72 bg-orange-200/30 rounded-full blur-3xl group-hover:bg-orange-200/50 group-hover:scale-125 transition-all duration-700 ease-out" />
@@ -17,13 +17,13 @@ function FeaturedWork() {
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
-          className="w-5 h-5 text-gray-400 group-hover:text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ease-out"
+          className="w-5 h-5 text-gray-400 group-hover:text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300 ease-out flex-shrink-0"
         >
           <path d="M7 17L17 7M17 7H8M17 7V16" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
 
-      <h2 className="relative text-6xl sm:text-8xl font-black tracking-tight mb-6 leading-none">
+      <h2 className="relative text-4xl sm:text-6xl lg:text-8xl font-black tracking-tight mb-6 leading-none break-words">
         <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 bg-clip-text text-transparent animate-shimmer">
           CREATIONS
         </span>

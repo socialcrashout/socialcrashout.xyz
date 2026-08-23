@@ -29,17 +29,17 @@ function StatusCards() {
 
   return (
     <section id="contact" ref={sectionRef} className="relative flex justify-center px-6 pb-8">
-      <div className="w-full max-w-5xl grid md:grid-cols-2 gap-6">
+      <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Connect card */}
         <div
-          className={`bg-white border border-gray-200 rounded-3xl px-8 py-10 shadow-sm hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out ${
+          className={`min-w-0 overflow-hidden bg-white border border-gray-200 rounded-3xl px-6 sm:px-8 py-10 shadow-sm hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <p className="text-accent font-mono text-sm tracking-[0.2em] uppercase mb-4">
             Connect
           </p>
-          <h3 className="text-3xl font-black tracking-tight text-gray-900 mb-4">
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 mb-4 break-words">
             DM me on Discord
           </h3>
           <p className="text-gray-500 leading-relaxed max-w-sm mb-8">
@@ -48,7 +48,7 @@ function StatusCards() {
 
           <hr className="border-gray-200 mb-6" />
 
-          <div className="flex items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-orange-50/40 px-4 py-3">
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-orange-50/40 px-4 py-3">
             <div className="flex items-center gap-3 min-w-0">
               <div className="shrink-0 h-10 w-10 rounded-full bg-white border border-accent/30 flex items-center justify-center">
                 <MessageCircle className="w-4 h-4 text-accent" />
@@ -81,22 +81,22 @@ function StatusCards() {
 
         {/* Work status card */}
         <div
-          className={`bg-white border border-gray-200 rounded-3xl px-8 py-10 shadow-sm hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out ${
+          className={`min-w-0 overflow-hidden bg-white border border-gray-200 rounded-3xl px-6 sm:px-8 py-10 shadow-sm hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
           style={{ transitionDelay: isVisible ? '120ms' : '0ms' }}
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
             <p className="text-accent font-mono text-sm tracking-[0.2em] uppercase">
               Work Status
             </p>
-            <span className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-mono tracking-wide text-emerald-600">
+            <span className="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-mono tracking-wide text-emerald-600 whitespace-nowrap">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
               OPEN
             </span>
           </div>
 
-          <h3 className="text-3xl font-black tracking-tight text-gray-900 mb-6">
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-gray-900 mb-6 break-words">
             Taking on{' '}
             <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 bg-clip-text text-transparent">
               new work
@@ -110,9 +110,9 @@ function StatusCards() {
               ['Response time', 'under 4 hours'],
               ['Experience', '1 yr+'],
             ].map(([label, value]) => (
-              <div key={label} className="flex items-center justify-between py-3.5">
+              <div key={label} className="flex items-center justify-between gap-3 py-3.5">
                 <span className="text-gray-500">{label}</span>
-                <span className="font-mono text-sm text-gray-900">{value}</span>
+                <span className="font-mono text-sm text-gray-900 whitespace-nowrap">{value}</span>
               </div>
             ))}
           </div>
