@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Cursor from './Cursor'
 
 // Swap this for real data once uploads are wired to a backend.
 const MOCK_WORK = [
@@ -21,6 +22,7 @@ function Admin() {
   if (!unlocked) {
     return (
       <div className="flex items-center justify-center min-h-screen">
+        <Cursor />
         <p className="text-gray-400">Nothing here.</p>
       </div>
     )
@@ -28,6 +30,7 @@ function Admin() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-16">
+      <Cursor />
       <div className="max-w-3xl mx-auto">
         <div className="flex items-center justify-between mb-2">
           <p className="text-accent font-mono text-xs tracking-[0.25em] uppercase">
