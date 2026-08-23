@@ -47,9 +47,16 @@ function Navbar() {
   function handleLogoClick() {
     if (isAdmin) return
     const input = prompt('Password:')
+    if (input === null) return
+    if (!ADMIN_PASSWORD) {
+      alert('Admin password not configured. Set VITE_ADMIN_PASSWORD in your .env file and restart the dev server.')
+      return
+    }
     if (input === ADMIN_PASSWORD) {
       localStorage.setItem('is_admin', 'true')
       setIsAdmin(true)
+    } else {
+      alert('Wrong password.')
     }
   }
 
@@ -201,6 +208,7 @@ function Navbar() {
                 Admin
               </a>
             )}
+
             <a
               href="#contact"
               onClick={handleConnectClick}
