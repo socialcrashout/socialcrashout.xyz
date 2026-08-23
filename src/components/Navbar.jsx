@@ -89,7 +89,7 @@ function Navbar() {
 
   return (
     <div className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
-      <nav className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-gray-200 rounded-full shadow-sm px-3 py-2 w-full max-w-4xl transition-all duration-300 hover:shadow-lg hover:border-gray-300 hover:-translate-y-0.5">
+      <nav className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-gray-200 rounded-full shadow-sm px-3 py-2 w-full max-w-4xl xl:max-w-6xl transition-all duration-300 hover:shadow-lg hover:border-gray-300 hover:-translate-y-0.5">
         <div
           onClick={handleLogoClick}
           className="flex items-center gap-2 pr-3 md:pr-4 md:mr-2 md:border-r border-gray-200 cursor-pointer select-none whitespace-nowrap"
