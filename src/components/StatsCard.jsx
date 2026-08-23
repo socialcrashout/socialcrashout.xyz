@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 const STATS = [
-  { value: 100, suffix: '+', label: 'Projects Completed' },
-  { value: 700, suffix: '+', label: 'Discord Members' },
-  { value: 3, suffix: '+', label: 'Years Creating' },
+  { value: 20, suffix: '+', label: 'Projects Completed' },
+  { value: 140, suffix: '+', label: 'Discord Members' },
+  { value: 1, suffix: '+', label: 'Years Creating' },
 ]
 
 function useCountUp(target, start) {

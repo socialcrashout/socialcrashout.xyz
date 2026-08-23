@@ -31,35 +31,35 @@ function Experience() {
       org: 'Horizon Designs',
       description:
         'A design studio built around clean, modern visuals and fast turnarounds — helping communities level up their look with custom graphics, server setups, and branding that stands out.',
-      tags: ['Branding', 'Custom Design'],
+      tags: ['ERLC', 'Design Server'],
       link: 'https://discord.gg/AqgMMbHn3',
     },
     {
       org: "ASB's Customs",
       description:
         "Since 2025, leading the game with the highest quality and most affordable designs out there. Explore a full range of services made to fit every budget.",
-      tags: ['Custom Design', 'Affordable'],
+      tags: ['ERLC', 'Design Server'],
       link: 'https://discord.gg/79yX6k7yD',
     },
     {
       org: 'Prime Designs',
       description:
         'Dedicated to bringing quality and innovation together, offering a diverse range of high-quality services tailored to meet every client\'s needs.',
-      tags: ['Quality', 'Innovation'],
+      tags: ['ERLC', 'Design Server'],
       link: 'https://discord.gg/GxS43h6Hq',
     },
     {
       org: "Judah's Customs",
       description:
         'Since August 23, 2025, focused on prioritizing quality over quantity — providing high-quality, efficient services tailored to every client.',
-      tags: ['Quality', 'Custom Design'],
+      tags: ['ERLC', 'Design Server'],
       link: 'https://discord.gg/2T5zYkKhU',
     },
     {
       org: 'Pulse Customs',
       description:
         'Founded July 2, 2024, providing high-quality, affordable products for all clients — alongside community events and giveaways.',
-      tags: ['Community', 'Events'],
+      tags: ['ERLC', 'Design Server'],
       link: 'https://discord.gg/DhXeV6hm5',
     },
   ]
