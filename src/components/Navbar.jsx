@@ -136,7 +136,7 @@ function Navbar() {
         {isAdmin && (
           <a
             href="/admin"
-            className="hidden md:inline-flex px-4 py-1.5 text-sm font-medium rounded-full bg-gray-900 text-white hover:scale-105 active:scale-90 transition-all duration-200 whitespace-nowrap mr-2"
+            className="hidden lg:inline-flex px-3 py-1.5 text-xs font-medium rounded-full border border-gray-300 text-gray-600 hover:border-accent hover:text-accent hover:scale-105 active:scale-90 transition-all duration-200 whitespace-nowrap mr-2"
           >
             Admin
           </a>
@@ -208,7 +208,6 @@ function Navbar() {
                 Admin
               </a>
             )}
-
             <a
               href="#contact"
               onClick={handleConnectClick}
