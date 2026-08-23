@@ -1,11 +1,11 @@
 function Hero() {
   return (
-    <div id="home" className="w-full lg:flex-1 bg-white border border-gray-200 rounded-3xl px-6 sm:px-12 py-12 sm:py-16 shadow-sm animate-card-in hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out overflow-hidden">
+    <div id="home" className="@container w-full lg:flex-1 bg-white border border-gray-200 rounded-3xl px-6 sm:px-12 py-12 sm:py-16 shadow-sm animate-card-in hover:-translate-y-2 hover:scale-[1.01] hover:border-accent/40 hover:shadow-2xl hover:shadow-orange-200/60 transition-all duration-500 ease-out overflow-hidden">
       <p className="text-accent font-mono text-sm tracking-[0.2em] uppercase mb-6">
         Designer &amp; Developer
       </p>
 
-      <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight mb-6 leading-none break-words">
+      <h1 className="text-3xl @sm:text-4xl @xl:text-5xl @4xl:text-6xl font-black tracking-tight mb-6 leading-none break-words">
         <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 bg-clip-text text-transparent animate-shimmer">
           .socialcrashout
         </span>
