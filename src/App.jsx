@@ -10,6 +10,7 @@ import Skills from './components/Skills'
 import Footer from './components/Footer'
 import MusicPlayer from './components/MusicPlayer'
 import Admin from './components/Admin'
+import AdminAddWork from './components/AdminAddWork'
 import Cursor from './components/Cursor'
 import StatusCards from './components/StatusCards'
 import StatsCard from './components/StatsCard'
@@ -17,9 +18,13 @@ import FeaturedWork from './components/FeaturedWork'
 import DynamicFavicon from './components/DynamicFavicon'
 
 function App() {
-  const isAdminRoute = window.location.pathname === '/admin'
+  const path = window.location.pathname
 
-  if (isAdminRoute) {
+  if (path === '/admin/add') {
+    return <AdminAddWork />
+  }
+
+  if (path === '/admin') {
     return <Admin />
   }
 
