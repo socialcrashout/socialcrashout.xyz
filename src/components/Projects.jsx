@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import modeLogo from '../assets/images/mode_logo.png'
 import honoluaIcon from '../assets/images/honolua_icon.png'
+import yumiIcon from '../assets/images/yumi.jpg'
 
 function Projects() {
   const sectionRef = useRef(null)
@@ -42,9 +43,9 @@ function Projects() {
       title: 'Yumi',
       description:
         'Image and video hosting with an API, dashboard, and custom domains.',
-      tags: ['Hosting', 'API'],
+      tags: ['Image & Video Hosting', 'API'],
       link: 'https://yumi.onl/',
-      image: yumi.jpg,
+      image: yumiIcon,
     },
   ]
 
@@ -86,10 +87,8 @@ function Projects() {
               } ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
               style={{ transitionDelay: isVisible ? `${150 + i * 100}ms` : '0ms' }}
             >
-              {/* gradient wash that fades in on hover */}
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-out" />
 
-              {/* soft glow blob following the card */}
               <div className="pointer-events-none absolute -inset-6 bg-gradient-to-r from-amber-400/0 via-orange-400/0 to-rose-400/0 group-hover:from-amber-400/10 group-hover:via-orange-400/10 group-hover:to-rose-400/10 blur-xl transition-all duration-500 ease-out" />
 
               {project.image && (
