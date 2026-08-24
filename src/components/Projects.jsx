@@ -44,7 +44,7 @@ function Projects() {
         'Image and video hosting with an API, dashboard, and custom domains.',
       tags: ['Hosting', 'API'],
       link: 'https://yumi.onl/',
-      image: yumi.png,
+      image: yumi.jpg,
     },
   ]
 
