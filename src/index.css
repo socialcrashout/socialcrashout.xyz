@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
-@theme {
-  --color-accent: #ff7a3d;
-  --color-accent-dark: #e35f22;
+@layer theme {
+  :root {
+    --color-accent: #ff7a3d;
+    --color-accent-dark: #e35f22;
+  }
 }
 
 html,
