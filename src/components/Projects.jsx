@@ -38,6 +38,14 @@ function Projects() {
       link: null,
       image: honoluaIcon,
     },
+    {
+      title: 'Yumi',
+      description:
+        'Image and video hosting with an API, dashboard, and custom domains.',
+      tags: ['Hosting', 'API'],
+      link: 'https://yumi.onl/',
+      image: yumi.png,
+    },
   ]
 
   return (
