@@ -7,8 +7,9 @@ function AdminAddWork() {
   const [checked, setChecked] = useState(false)
   const [title, setTitle] = useState('')
   const [category, setCategory] = useState(CATEGORIES[0].key)
-  const [file, setFile] = useState(null)
+  const [files, setFiles] = useState([])
   const [submitting, setSubmitting] = useState(false)
+  const [progress, setProgress] = useState({ done: 0, total: 0 })
   const [error, setError] = useState('')
 
   useEffect(() => {
@@ -35,14 +36,20 @@ function AdminAddWork() {
       setError('Enter a title')
       return
     }
-    if (!file) {
-      setError('Choose a file to upload')
+    if (!files.length) {
+      setError('Choose at least one file to upload')
       return
     }
 
     setSubmitting(true)
+    setProgress({ done: 0, total: files.length })
+
     try {
-      await addWork({ title: title.trim(), category, file })
+      for (let i = 0; i < files.length; i++) {
+        const itemTitle = files.length > 1 ? `${title.trim()} ${i + 1}` : title.trim()
+        await addWork({ title: itemTitle, category, file: files[i] })
+        setProgress({ done: i + 1, total: files.length })
+      }
       window.location.href = '/admin'
     } catch (err) {
       setError('Upload failed. Try a smaller file — browser storage has limited space.')
@@ -73,6 +80,11 @@ function AdminAddWork() {
               placeholder="Neon logo intro"
               className="w-full border border-gray-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-accent"
             />
+            {files.length > 1 && (
+              <p className="text-xs text-gray-400 mt-1.5">
+                {files.length} files selected — each will be uploaded as "{title.trim() || 'Title'} 1", "{title.trim() || 'Title'} 2", etc.
+              </p>
+            )}
           </div>
 
           <div>
@@ -89,12 +101,20 @@ function AdminAddWork() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">File</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">File(s)</label>
             <input
               type="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              multiple
+              onChange={(e) => setFiles(Array.from(e.target.files || []))}
               className="w-full text-sm text-gray-500"
             />
+            {files.length > 0 && (
+              <ul className="mt-2 space-y-1">
+                {files.map((f, i) => (
+                  <li key={i} className="text-xs text-gray-400 truncate">{f.name}</li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {error && <p className="text-sm text-red-500">{error}</p>}
@@ -104,7 +124,11 @@ function AdminAddWork() {
             disabled={submitting}
             className="w-full bg-accent text-white font-semibold py-3 rounded-xl hover:bg-[var(--color-accent-dark)] transition-colors duration-200 disabled:opacity-50"
           >
-            {submitting ? 'Uploading…' : 'Upload work'}
+            {submitting
+              ? `Uploading… (${progress.done}/${progress.total})`
+              : files.length > 1
+                ? `Upload ${files.length} files`
+                : 'Upload work'}
           </button>
         </form>
       </div>
