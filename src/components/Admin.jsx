@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Cursor from './Cursor'
-import { getWork, deleteWork, subscribeToWork, CATEGORIES } from '../utils/workStore'
+import { getWork, deleteWork, subscribeToWork, getWorkFileUrl, CATEGORIES } from '../utils/workStore'
 import { getSiteSettings, updateSiteSettings, subscribeToSiteSettings } from '../utils/siteStore'
 
 const NAV_ITEMS = [
@@ -30,12 +30,50 @@ function Toggle({ checked, onChange }) {
   )
 }
 
+function WorkThumbnail({ item }) {
+  const [url, setUrl] = useState(null)
+
+  useEffect(() => {
+    if (!item.fileType?.startsWith('image/')) return
+
+    let objectUrl = null
+    let cancelled = false
+
+    getWorkFileUrl(item.id).then((u) => {
+      if (cancelled) return
+      objectUrl = u
+      setUrl(u)
+    })
+
+    return () => {
+      cancelled = true
+      if (objectUrl) URL.revokeObjectURL(objectUrl)
+    }
+  }, [item.id, item.fileType])
+
+  if (!item.fileType?.startsWith('image/') || !url) return null
+
+  return <img src={url} alt="" className="w-10 h-10 rounded-lg object-cover" />
+}
+
 function ManageWorkPanel() {
   const [work, setWork] = useState([])
 
   useEffect(() => {
-    setWork(getWork())
-    return subscribeToWork(() => setWork(getWork()))
+    let cancelled = false
+
+    async function load() {
+      const items = await getWork()
+      if (!cancelled) setWork(items)
+    }
+
+    load()
+
+    const unsubscribe = subscribeToWork(load)
+    return () => {
+      cancelled = true
+      unsubscribe()
+    }
   }, [])
 
   return (
@@ -59,9 +97,7 @@ function ManageWorkPanel() {
           work.map((item) => (
             <div key={item.id} className="flex items-center justify-between px-6 py-4">
               <div className="flex items-center gap-3">
-                {item.fileType?.startsWith('image/') && (
-                  <img src={item.fileData} alt="" className="w-10 h-10 rounded-lg object-cover" />
-                )}
+                <WorkThumbnail item={item} />
                 <div>
                   <p className="font-semibold text-gray-900">{item.title}</p>
                   <p className="text-sm text-gray-400">{categoryLabel(item.category)}</p>
