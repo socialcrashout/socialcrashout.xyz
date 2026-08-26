@@ -15,22 +15,20 @@ import Cursor from './components/Cursor'
 import StatusCards from './components/StatusCards'
 import StatsCard from './components/StatsCard'
 import FeaturedWork from './components/FeaturedWork'
-import DynamicFavicon from './components/DynamicFavicon'
 
 function App() {
   const path = window.location.pathname
-
-  if (path === '/admin/add') {
-    return <AdminAddWork />
-  }
 
   if (path === '/admin') {
     return <Admin />
   }
 
+  if (path === '/admin/add') {
+    return <AdminAddWork />
+  }
+
   return (
     <div className="relative bg-white text-gray-900 min-h-screen overflow-hidden">
-      <DynamicFavicon />
       <Cursor />
 
       {/* Ambient animated background blobs */}
