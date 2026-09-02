@@ -52,7 +52,10 @@ function AdminAddWork() {
       }
       window.location.href = '/admin'
     } catch (err) {
-      setError('Upload failed. Try a smaller file — browser storage has limited space.')
+      // Log the full error for debugging, and show the real message
+      // instead of guessing at the cause.
+      console.error('Upload failed:', err)
+      setError(`Upload failed: ${err?.message || 'Unknown error — check the browser console for details.'}`)
       setSubmitting(false)
     }
   }
