@@ -1,6 +1,12 @@
-const DB_NAME = 'portfolio_db'
-const DB_VERSION = 1
-const STORE_NAME = 'work'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY
+)
+
+const TABLE_NAME = 'work'
+const BUCKET_NAME = 'work-files'
 const EVENT_NAME = 'work-updated'
 
 export const CATEGORIES = [
@@ -11,56 +17,29 @@ export const CATEGORIES = [
   { key: 'servers', label: 'Discord servers' },
 ]
 
-let dbPromise = null
-
-function openDB() {
-  if (dbPromise) return dbPromise
-  dbPromise = new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION)
-    req.onupgradeneeded = () => {
-      const db = req.result
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        const store = db.createObjectStore(STORE_NAME, { keyPath: 'id' })
-        store.createIndex('createdAt', 'createdAt')
-      }
-    }
-    req.onsuccess = () => resolve(req.result)
-    req.onerror = () => reject(req.error)
-  })
-  return dbPromise
-}
-
-async function withStore(mode, callback) {
-  const db = await openDB()
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, mode)
-    const store = tx.objectStore(STORE_NAME)
-    const result = callback(store)
-    tx.oncomplete = () => resolve(result)
-    tx.onerror = () => reject(tx.error)
-    tx.onabort = () => reject(tx.error)
-  })
-}
-
-function requestToPromise(request) {
-  return new Promise((resolve, reject) => {
-    request.onsuccess = () => resolve(request.result)
-    request.onerror = () => reject(request.error)
-  })
-}
-
 function notify() {
   window.dispatchEvent(new Event(EVENT_NAME))
 }
 
-// Returns metadata only (no fileData) — cheap to call often for lists/counts.
+// Returns metadata only — cheap to call often for lists/counts.
 export async function getWork() {
-  const db = await openDB()
-  const tx = db.transaction(STORE_NAME, 'readonly')
-  const store = tx.objectStore(STORE_NAME)
-  const items = await requestToPromise(store.getAll())
-  items.sort((a, b) => b.createdAt - a.createdAt)
-  return items.map(({ fileBlob, ...meta }) => meta)
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select('id, title, category, file_name, file_type, file_url, created_at')
+    .order('created_at', { ascending: false })
+
+  if (error) throw error
+
+  // Map snake_case DB columns -> camelCase to match the old shape
+  return data.map((row) => ({
+    id: row.id,
+    title: row.title,
+    category: row.category,
+    fileName: row.file_name,
+    fileType: row.file_type,
+    fileUrl: row.file_url,
+    createdAt: new Date(row.created_at).getTime(),
+  }))
 }
 
 export async function getCounts() {
@@ -73,34 +52,66 @@ export async function getCounts() {
   return counts
 }
 
-// Fetches the actual file blob for one item and returns an object URL.
-// Caller is responsible for calling URL.revokeObjectURL(url) when done
-// (e.g. in a useEffect cleanup) to avoid leaking memory.
+// Files live in Supabase Storage with a public URL, so there's no blob
+// to fetch and no object URL to revoke. Kept as an async function (and the
+// same name) so existing callers (CreationThumb, Lightbox) don't need to
+// change how they call it — it just resolves immediately with the public URL.
 export async function getWorkFileUrl(id) {
-  const db = await openDB()
-  const tx = db.transaction(STORE_NAME, 'readonly')
-  const store = tx.objectStore(STORE_NAME)
-  const item = await requestToPromise(store.get(id))
-  if (!item || !item.fileBlob) return null
-  return URL.createObjectURL(item.fileBlob)
+  const { data, error } = await supabase
+    .from(TABLE_NAME)
+    .select('file_url')
+    .eq('id', id)
+    .single()
+
+  if (error) throw error
+  return data?.file_url ?? null
 }
 
 export async function addWork({ title, category, file }) {
-  const item = {
-    id: crypto.randomUUID(),
+  const ext = file.name.split('.').pop()
+  const path = `${category}/${crypto.randomUUID()}.${ext}`
+
+  const { error: uploadError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .upload(path, file, { contentType: file.type })
+
+  if (uploadError) throw uploadError
+
+  const { data: publicUrlData } = supabase.storage
+    .from(BUCKET_NAME)
+    .getPublicUrl(path)
+
+  const { error: insertError } = await supabase.from(TABLE_NAME).insert({
     title,
     category,
-    fileName: file.name,
-    fileType: file.type,
-    fileBlob: file, // File is a Blob subclass — stored natively, no base64
-    createdAt: Date.now(),
-  }
-  await withStore('readwrite', (store) => store.put(item))
+    file_name: file.name,
+    file_type: file.type,
+    file_url: publicUrlData.publicUrl,
+    storage_path: path,
+  })
+
+  if (insertError) throw insertError
+
   notify()
 }
 
 export async function deleteWork(id) {
-  await withStore('readwrite', (store) => store.delete(id))
+  // Look up the storage path so we can clean up the file too.
+  const { data, error: fetchError } = await supabase
+    .from(TABLE_NAME)
+    .select('storage_path')
+    .eq('id', id)
+    .single()
+
+  if (fetchError) throw fetchError
+
+  if (data?.storage_path) {
+    await supabase.storage.from(BUCKET_NAME).remove([data.storage_path])
+  }
+
+  const { error: deleteError } = await supabase.from(TABLE_NAME).delete().eq('id', id)
+  if (deleteError) throw deleteError
+
   notify()
 }
 
